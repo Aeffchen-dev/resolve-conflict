@@ -624,9 +624,14 @@ export function QuizApp() {
       categorized[q.category].push(q);
     });
     
-    // Shuffle questions within each category (random on every reload)
+    // Fisher-Yates shuffle for proper randomization within each category on every reload
     Object.keys(categorized).forEach(category => {
-      categorized[category] = categorized[category].sort(() => Math.random() - 0.5);
+      const array = categorized[category];
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      categorized[category] = array;
     });
     
     // Sort categories in specific order based on actual CSV data
